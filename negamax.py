@@ -1,10 +1,11 @@
+from __future__ import annotations
 import chess
 import math
 from typing import Tuple, Union
 import rate
 import random
 
-def best_move(board: chess.Board, for_white: bool, depth: int) -> Tuple[Union[chess.Move, None], float]:
+def best_move(board: chess.Board, for_white: bool, depth: int) -> Tuple[chess.Move | None, float]:
     result = (None, -math.inf)
 
     moves = random.sample(list(board.legal_moves), board.legal_moves.count())

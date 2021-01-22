@@ -15,7 +15,7 @@ def ask_if_white() -> bool:
     i_am_white = inquirer.prompt(questions)["pieces"] == "white"
     return i_am_white
 
-def input_depth() -> int:
+def input_depth():
     while True:
         try:
             return int(input("How many moves to look ahead? "))
@@ -28,13 +28,13 @@ def error(message: str):
 def info(message: str):
     print(f"{Fore.YELLOW}{message}{Style.RESET_ALL}")
 
-def player_string(is_white: bool) -> str:
+def player_string(is_white: bool):
     if is_white:
         return f"{Back.WHITE}{Fore.BLACK} white {Style.RESET_ALL}"
     else:
         return f"{Back.BLACK}{Fore.WHITE} black {Style.RESET_ALL}"
 
-def play_move_for_opponent(board: chess.Board, i_am_white: bool):
+def input_move(board: chess.Board, i_am_white: bool):
     uci = input(f"Which move to play for {player_string(not i_am_white)}? ")
     try:
         board.push_san(uci)
@@ -42,9 +42,9 @@ def play_move_for_opponent(board: chess.Board, i_am_white: bool):
         print_board(board, i_am_white)
     except ValueError:
         error("Not a (legal) move. Try again!\n")
-        play_move_for_opponent(board, not i_am_white)
+        input_move(board, not i_am_white)
 
-def calculate_move_for_me(board: chess.Board, depth: int, i_am_white: bool):
+def auto_move(board: chess.Board, depth: int, i_am_white: bool):
     print(f"Calculating best move for {player_string(i_am_white)} ...")
     (move, _) = negamax.best_move(board, i_am_white, depth)
 

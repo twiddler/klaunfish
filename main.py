@@ -4,7 +4,7 @@ import oi # ᕕ(⌐■_■)ᕗ
 if __name__ == "__main__":
     board = chess.Board()
     
-    players = tuple([oi.ask_player_type(color) for color in (chess.WHITE, chess.BLACK)])
+    players = [oi.ask_player_type(color) for color in (chess.WHITE, chess.BLACK)]
 
     #if oi.Player.COMPUTER in players:
     depth = oi.input_depth()

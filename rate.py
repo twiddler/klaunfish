@@ -8,7 +8,7 @@ piece_values = {
     chess.BISHOP: 3.25,
     chess.ROOK: 5,
     chess.QUEEN: 9,
-    chess.KING: math.inf
+    chess.KING: 3
 }
 
 def rate_piece(piece: chess.Piece) -> float:
@@ -20,8 +20,13 @@ def rate_square(board: chess.Board, square: chess.Square) -> float:
     return rate_piece(piece) if piece != None else 0
 
 def rate_board(board: chess.Board, for_white: bool) -> float:
-    sum = 0
-    for square in chess.SQUARES:
-        sum += rate_square(board, square)
+    # > 0 favors white
 
-    return sum if for_white else -sum
+    if board.is_checkmate():
+        return -math.inf if for_white else math.inf
+
+    result = 0
+    for square in chess.SQUARES:
+        result += rate_square(board, square)
+
+    return result if for_white else -result

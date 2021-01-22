@@ -2,13 +2,14 @@ import chess
 import math
 from typing import Tuple, Union
 import rate
+import random
 
 def best_move(board: chess.Board, for_white: bool, depth: int) -> Tuple[Union[chess.Move, None], float]:
     result = (None, -math.inf)
 
-    #shuffle
+    moves = random.sample(list(board.legal_moves), board.legal_moves.count())
 
-    for move in board.legal_moves:
+    for move in moves:
         rating = rate_move(move, board, for_white, depth)
 
         if rating > result[1]:

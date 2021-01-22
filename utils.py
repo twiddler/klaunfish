@@ -34,15 +34,15 @@ def player_string(is_white: bool) -> str:
     else:
         return f"{Back.BLACK}{Fore.WHITE} black {Style.RESET_ALL}"
 
-def play_move_for_opponent(board: chess.Board, is_white: bool):
-    uci = input(f"Which move to play for {player_string(is_white)}? ")
+def play_move_for_opponent(board: chess.Board, i_am_white: bool):
+    uci = input(f"Which move to play for {player_string(not i_am_white)}? ")
     try:
         board.push_san(uci)
         print("")
-        print(board, "\n")
+        print_board(board, i_am_white)
     except ValueError:
         error("Not a (legal) move. Try again!\n")
-        play_move_for_opponent(board, is_white)
+        play_move_for_opponent(board, not i_am_white)
 
 def calculate_move_for_me(board: chess.Board, depth: int, i_am_white: bool):
     print(f"Calculating best move for {player_string(i_am_white)} ...")
@@ -54,4 +54,7 @@ def calculate_move_for_me(board: chess.Board, depth: int, i_am_white: bool):
 
     board.push(move)
     print("")
-    print(board, "\n")
+    print_board(board, i_am_white)
+
+def print_board(board, i_am_white):
+    print(board if i_am_white else board.transform(chess.flip_vertical), "\n")

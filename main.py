@@ -6,8 +6,9 @@ if __name__ == "__main__":
     
     players = [oi.ask_player_type(color) for color in (chess.WHITE, chess.BLACK)]
 
-    #if oi.Player.COMPUTER in players:
-    depth = oi.input_depth()
+    depth = None
+    if oi.Player.COMPUTER in players:
+        depth = oi.input_depth()
 
     oi.print_board(board)
 

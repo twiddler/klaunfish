@@ -3,18 +3,23 @@ from colorama import Fore
 from colorama import Style
 from colorama import Back
 import inquirer
+from enum import Flag
 import rate
 import paint
 
-def ask_if_white() -> bool:
+class Player(Flag):
+    COMPUTER = True
+    HUMAN = False
+
+def ask_player_type(is_white: bool) -> Player:
     questions = [
         inquirer.List("pieces",
-            message="Which pieces do you play?",
-            choices=["white", "black"],
+            message=f"Who controls {player_string(is_white)}?",
+            choices=["computer", "human"],
         )
     ]
-    i_am_white = inquirer.prompt(questions)["pieces"] == "white"
-    return i_am_white
+    is_computer = inquirer.prompt(questions)["pieces"] == "computer"
+    return is_computer
 
 def input_depth():
     while True:
@@ -35,17 +40,17 @@ def player_string(is_white: bool):
     else:
         return f"{Back.BLACK}{Fore.WHITE} black {Style.RESET_ALL}"
 
-def input_move(board: chess.Board, i_am_white: bool):
-    uci = input(f"Which move to play for {player_string(not i_am_white)}? ")
+def input_move(board: chess.Board):
+    uci = input(f"Which move to play for {player_string(board.turn)}? ")
     try:
         board.push_san(uci)
         print("")
         print_board(board)
     except ValueError:
         error("Not a (legal) move. Try again!\n")
-        input_move(board, not i_am_white)
+        input_move(board)
 
-def auto_move(board: chess.Board, depth: int, i_am_white: bool):
+def auto_move_rec(board: chess.Board, depth: int, i_am_white: bool):
     print(f"Calculating best move for {player_string(i_am_white)} ...")
     (move, _) = rate.best_move(board, i_am_white, depth)
 
@@ -56,6 +61,9 @@ def auto_move(board: chess.Board, depth: int, i_am_white: bool):
     board.push(move)
     print("")
     print_board(board)
+
+def auto_move(board: chess.Board, depth = 3):
+    auto_move_rec(board, depth, board.turn)
 
 def print_board(board):
     painted = paint.paint_squares_and_pieces(str(board))

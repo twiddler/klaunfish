@@ -1,28 +1,33 @@
+import chess
 import math
+from typing import Tuple, Union
 
-def best_move(board, forWhite: bool, depth: int):
-    result = [None, -math.inf]
-    moves = legal_moves(board, forWhite)
+def best_move(board: chess.Board, for_white: bool, depth: int) -> Tuple[Union[chess.Move, None], float]:
+    result = (None, -math.inf)
 
-    for move in moves:
-        rating = rate_move(move, board, forWhite, depth)
+    for move in board.legal_moves:
+        rating = rate_move(move, board, for_white, depth)
 
-        if rating > result[0]:
-            result = [move, rating]
+        if rating > result[1]:
+            result = (move, rating)
     
     return result
 
-def rate_move(move, board, forWhite: bool, depth: int) -> float:
-    next_board = play(move, board)
+def rate_move(move: chess.Move, board: chess.Board, for_white: bool, depth: int) -> float:
+    board.push(move)
 
     if depth == 1:
-        return rate_board(next_board, forWhite)
+        result = rate_board(board, for_white)
     else:
-        return -best_move(board, not forWhite, depth - 1)[1]
+        (_, rating) = best_move(board, not for_white, depth - 1)
+        result = -rating
 
-def rate_board(board, forWhite: bool) -> float:
+    board.pop()
+    return result
+
+def rate_board(board: chess.Board, for_white: bool) -> float:
     white_pieces_value = 1
     black_pieces_value = 3
     rating_for_white = white_pieces_value - black_pieces_value
 
-    return rating_for_white if forWhite else -rating_for_white
+    return rating_for_white if for_white else -rating_for_white

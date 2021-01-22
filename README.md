@@ -1,1 +1,1 @@
-This is a simple chess bot just for fun! :tada:
+A simple chess bot just for fun! :robot:

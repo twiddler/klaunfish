@@ -74,7 +74,7 @@ def replace_with_unicode(board_str):
         ('q', '♛'),
         ('k', '♚'),
         ('p', '♟'),
-        ('.', ' ')
+        ('.', '·')
     ]
 
     for k, v in mapping:

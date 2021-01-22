@@ -57,4 +57,27 @@ def calculate_move_for_me(board: chess.Board, depth: int, i_am_white: bool):
     print_board(board, i_am_white)
 
 def print_board(board, i_am_white):
-    print(board if i_am_white else board.transform(chess.flip_vertical), "\n")
+    print(replace_with_unicode(str(board)), "\n")
+    # print(board if i_am_white else board.transform(chess.flip_vertical), "\n")
+
+def replace_with_unicode(board_str):
+    mapping = [
+        ('R', '♖'),
+        ('N', '♘'),
+        ('B', '♗'),
+        ('Q', '♕'),
+        ('K', '♔'),
+        ('P', '♙'),
+        ('r', '♜'),
+        ('n', '♞'),
+        ('b', '♝'),
+        ('q', '♛'),
+        ('k', '♚'),
+        ('p', '♟'),
+        ('.', ' ')
+    ]
+
+    for k, v in mapping:
+        board_str = board_str.replace(k, v)
+
+    return board_str

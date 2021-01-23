@@ -19,7 +19,7 @@ chmod +x lichess-bot/serve.sh
 # merge and install requirements
 cat klaunfish/requirements.txt >> lichess-bot/requirements.txt
 source lichess-bot/.venv/bin/activate
-pip install -r requirements.txt
+pip install -r lichess-bot/requirements.txt
 
 # clean up a bit
 rm -rf klaunfish

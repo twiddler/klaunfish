@@ -27,4 +27,6 @@ pip install -r lichess-bot/requirements.txt
 rm -rf klaunfish
 
 # inform what to do next
+echo
 echo Go to $(pwd)/lichess-bot, edit your config.yml and run serve.sh
+echo

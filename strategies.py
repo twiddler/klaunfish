@@ -1,10 +1,12 @@
-# Make this bot compatible with https://github.com/namin/lichess-bot
+# Makes this bot compatible with https://github.com/namin/lichess-bot
 
-from oi import auto_move_rec
+from rate import best_move
+import math
 
 
 def klaunfish(board):
-    return auto_move_rec(board, 30).uci()
+    (move, _) = best_move(board, 30, -math.inf)
+    return move.uci()
 
 
 strategies = {"klaunfish": klaunfish}

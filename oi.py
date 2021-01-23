@@ -1,8 +1,6 @@
 import chess
 import math
-from colorama import Fore
-from colorama import Style
-from colorama import Back
+from colorama import Fore, Style, Back
 import inquirer
 from enum import Flag
 import rate

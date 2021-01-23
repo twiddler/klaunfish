@@ -1,6 +1,4 @@
-from colorama import Fore
-from colorama import Style
-from colorama import Back
+from colorama import Fore, Style, Back
 
 def paint_squares_and_pieces(board_str):
     result = ""

@@ -62,7 +62,7 @@ def auto_move_rec(board: chess.Board, depth: int) -> chess.Move:
 
     return move
 
-def auto_move(board: chess.Board, depth = 3):
+def auto_move(board: chess.Board, depth = 11):
     move = auto_move_rec(board, depth)
 
     board.push(move)

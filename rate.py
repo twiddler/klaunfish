@@ -22,13 +22,12 @@ def rate_move(move: chess.Move, board: chess.Board, depth: int) -> float:
     board.push(move)
 
     if depth == 1:
-        result = rate.rate_board(board)
+        rating = rate.rate_board(board)
     else:
         (_, rating) = best_move(board, depth - 1)
-        result = -rating
 
     board.pop()
-    return result
+    return -rating
 
 piece_values = {
     chess.PAWN: 1,
@@ -48,14 +47,14 @@ def rate_square(board: chess.Board, square: chess.Square) -> float:
     return rate_piece(piece) if piece != None else 0
 
 def rate_board(board: chess.Board) -> float:
-    # > 0 favors white
+    # Rates board for current player. > 0 favors white. Remember to invert the result if you want to rate the other player's last move from their perspective.
 
     if board.is_checkmate():
-        return -math.inf if board.turn == chess.WHITE else math.inf
+        result = -math.inf
 
     else:
         result = 0
         for square in chess.SQUARES:
             result += rate_square(board, square)
-
-        return result if board.turn == chess.WHITE else -result
+    
+    return result if board.turn == chess.WHITE else -result

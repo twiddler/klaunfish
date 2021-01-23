@@ -1,9 +1,9 @@
 import chess
-import oi # ᕕ(⌐■_■)ᕗ
+import oi  # ᕕ(⌐■_■)ᕗ
 
 if __name__ == "__main__":
     board = chess.Board()
-    
+
     players = [oi.ask_player_type(color) for color in (chess.WHITE, chess.BLACK)]
 
     depth = None

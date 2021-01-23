@@ -1,5 +1,6 @@
 from colorama import Fore, Style, Back
 
+
 def paint_squares_and_pieces(board_str):
     result = ""
     colors = cycle([paint_square_white, paint_square_black])
@@ -13,16 +14,20 @@ def paint_squares_and_pieces(board_str):
         result += "\n"
     return result
 
+
 def cycle(l):
     while True:
         yield l
         l.append(l.pop(0))
 
+
 def paint_square_white(s: str):
     return f"{Back.CYAN}{s}{Style.RESET_ALL}"
 
+
 def paint_square_black(s: str):
     return f"{Back.BLUE}{s}{Style.RESET_ALL}"
+
 
 def painter(margin: int, colors):
     while True:
@@ -30,14 +35,17 @@ def painter(margin: int, colors):
             for _ in range(margin + 1):
                 yield color
 
+
 def paint_piece_black(s):
     return f"{Fore.BLACK}{s}"
+
 
 def paint_piece_white(s):
     return f"{Fore.WHITE}{s}"
 
+
 symbol_table = {
-    'r': paint_piece_black("♜"),
+    "r": paint_piece_black("♜"),
     "n": paint_piece_black("♞"),
     "b": paint_piece_black("♝"),
     "q": paint_piece_black("♛"),
@@ -50,8 +58,9 @@ symbol_table = {
     "K": paint_piece_white("♚"),
     "P": paint_piece_white("♟"),
     ".": " ",
-    " ": " "
+    " ": " ",
 }
+
 
 def symbolify(c):
     return symbol_table[c]

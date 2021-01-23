@@ -5,7 +5,10 @@ import rate
 import random
 from typing import Dict, Tuple, Union
 
-def best_move(board: chess.Board, depth: int, rating_to_beat: float) -> Tuple[chess.Move | None, float]:
+
+def best_move(
+    board: chess.Board, depth: int, rating_to_beat: float
+) -> Tuple[chess.Move | None, float]:
     result = (None, rating_to_beat)
 
     moves = random.sample(list(board.legal_moves), board.legal_moves.count())
@@ -15,10 +18,13 @@ def best_move(board: chess.Board, depth: int, rating_to_beat: float) -> Tuple[ch
 
         if rating >= result[1]:
             result = (move, rating)
-    
+
     return result
 
-def rate_move(move: chess.Move, board: chess.Board, depth: int, rating_to_beat: float) -> float:
+
+def rate_move(
+    move: chess.Move, board: chess.Board, depth: int, rating_to_beat: float
+) -> float:
     board.push(move)
 
     intermediate_rating = -rate.rate_board(board)
@@ -33,22 +39,26 @@ def rate_move(move: chess.Move, board: chess.Board, depth: int, rating_to_beat: 
     board.pop()
     return result
 
+
 piece_values = {
     chess.PAWN: 1,
     chess.KNIGHT: 3,
     chess.BISHOP: 3.25,
     chess.ROOK: 5,
     chess.QUEEN: 9,
-    chess.KING: 3
+    chess.KING: 3,
 }
+
 
 def rate_piece(piece: chess.Piece) -> float:
     piece_value = piece_values[piece.piece_type]
     return piece_value if piece.color == chess.WHITE else -piece_value
 
+
 def rate_square(board: chess.Board, square: chess.Square) -> float:
     piece = board.piece_at(square)
     return rate_piece(piece) if piece != None else 0
+
 
 def rate_board(board: chess.Board) -> float:
     # Rates board for current player. > 0 favors white. Remember to invert the result if you want to rate the other player's last move from their perspective.
@@ -60,5 +70,5 @@ def rate_board(board: chess.Board) -> float:
         result = 0
         for square in chess.SQUARES:
             result += rate_square(board, square)
-    
+
     return result if board.turn == chess.WHITE else -result

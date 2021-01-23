@@ -11,7 +11,7 @@ class Player(Flag):
     COMPUTER = True
     HUMAN = False
 
-def ask_player_type(color: bool) -> Player:
+def ask_player_type(color: chess.Color) -> Player:
     questions = [
         inquirer.List("pieces",
             message=f"Who controls {player_string(color)}?",
@@ -34,7 +34,7 @@ def error(message: str):
 def info(message: str):
     print(f"{Fore.YELLOW}{message}{Style.RESET_ALL}")
 
-def player_string(color: bool):
+def player_string(color: chess.Color):
     if color == chess.WHITE:
         return f"{Back.WHITE}{Fore.BLACK} white {Style.RESET_ALL}"
     else:

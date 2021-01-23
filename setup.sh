@@ -5,7 +5,9 @@ cd $(mktemp /tmp/klaunfish.XXX --directory)
 
 # get and configure bot runner
 git clone git@github.com:namin/lichess-bot
+cd lichess-bot
 git checkout acba34feb7f9d4aa7f76f7c7d1c2ad4c372a0637
+cd ..
 
 # get klaunfish
 git clone --depth 1 git@github.com:twiddler/klaunfish
@@ -25,4 +27,4 @@ pip install -r lichess-bot/requirements.txt
 rm -rf klaunfish
 
 # inform what to do next
-echo Go to $(pwd), edit your config.yml and run serve.sh
+echo Go to $(pwd)/lichess-bot, edit your config.yml and run serve.sh

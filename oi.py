@@ -60,7 +60,7 @@ def input_move(board: chess.Board):
 
 def auto_move(board: chess.Board, depth=11):
     print(f"Calculating best move for {player_string(board.turn)} ...")
-    (move, _) = rate.best_move(board, depth, -math.inf)
+    (move, _, _, _) = rate.best_move(board, depth)
 
     if move == None:
         info(f"No legal move left.")

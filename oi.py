@@ -51,20 +51,24 @@ def input_move(board: chess.Board):
         error("Not a (legal) move. Try again!\n")
         input_move(board)
 
-def auto_move_rec(board: chess.Board, depth: int):
+def auto_move_rec(board: chess.Board, depth: int) -> chess.Move:
     print(f"Calculating best move for {player_string(board.turn)} ...")
     (move, _) = rate.best_move(board, depth, -math.inf)
 
     if move == None:
+        # Lichess games should not end before this happens
         info(f"No legal move left.")
         exit(0)
+
+    return move
+
+def auto_move(board: chess.Board, depth = 3):
+    move = auto_move_rec(board, depth)
 
     board.push(move)
     print("")
     print_board(board)
 
-def auto_move(board: chess.Board, depth = 3):
-    auto_move_rec(board, depth)
 
 def print_board(board: chess.Board):
     painted = paint.paint_squares_and_pieces(str(board))

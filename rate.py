@@ -6,17 +6,40 @@ import random
 from typing import Dict, Tuple, Union, List
 
 
-def sorted_legal_moves(board: chess.Board):
-    # Seeing best moves early speeds up pruning.
+def moves_to_center(board: chess.Board, move: chess.Move):
+    return move.to_square in [chess.D4, chess.D5, chess.E4, chess.E5]
 
-    to_key = lambda move: (
-        board.is_capture(move),
-        not board.is_attacked_by(not board.turn, move.to_square),
-        len(board.attacks(move.to_square)) > 0,
+
+def moves_to_inner(board: chess.Board, move: chess.Move):
+    return move.to_square in [chess.C3, chess.C4, chess.C5, chess.C6, chess.D3, chess.D6, chess.E3, chess.E6, chess.F3, chess.F4, chess.F5, chess.F6]
+
+
+def captures(board, move):
+    return board.is_capture(move)
+
+
+def not_attacked(board, move):
+    return not board.is_attacked_by(not board.turn, move.to_square)
+
+
+def attacking(board, move):
+    return len(board.attacks(move.to_square)) > 0
+
+
+def label_for_sort(board, move):
+    # Seeing best move early speeds up pruning.
+    return (
+        captures(board, move),
+        not_attacked(board, move),
+        attacking(board, move),
+        moves_to_center(board, move),
+        moves_to_inner(board, move),
     )
 
+
+def sorted_legal_moves(board: chess.Board):
     # We want Trues to come first. But False < True. So negate.
-    key = lambda move: tuple([not e for e in to_key(move)])
+    key = lambda move: tuple([not e for e in label_for_sort(board, move)])
 
     return sorted(board.legal_moves, key=key)
 
@@ -28,32 +51,24 @@ def best_move(
     hi: float = -math.inf,
 ) -> Tuple[chess.Move | None, float, float, float]:
 
+    if depth == 0:
+        return (None, rate.rate_board(board), lo, hi)
+
     move_to_beat: chess.Move | None = None
     board_rating_to_beat = -math.inf if board.turn == chess.WHITE else math.inf
 
-    prune = False
-    for move in sorted_legal_moves(board):
-        if prune:
-            break
+    moves = sorted_legal_moves(board)
+    moves_left = len(moves)
+    for move in moves:
+        moves_left -= 1
+        # print(label_for_sort(board, move))
 
         # Rate board if move was made
         board.push(move)
-        if depth == 0:
-            board_rating = rate.rate_board(board)
-        else:
-            (_, board_rating, lo, hi) = best_move(board, depth - 1, hi, lo)
-
-            if board.turn == chess.BLACK:
-                if board_rating < lo:
-                    # Black will follow the path that leads to the lowest rating. White will not allow Black to get here if it can force a path with a higher rating.
-                    prune = True
-            else:
-                if board_rating > hi:
-                    # Black would not let White get here
-                    prune = True
-
+        (_, board_rating, lo, hi) = best_move(board, depth - 1, lo, hi)
         board.pop()
 
+        # Remember best move
         if board.turn == chess.BLACK:
             if board_rating <= board_rating_to_beat:  # TODO: Make < possible
                 move_to_beat = move
@@ -64,6 +79,20 @@ def best_move(
                 move_to_beat = move
                 board_rating_to_beat = board_rating
                 hi = max(hi, board_rating)
+
+        # Prune when possible
+        if last_turn(board) == chess.WHITE:
+            if board_rating < lo:
+                # Black will follow the path that leads to the lowest rating. White will not allow Black to get here if it can force a path with a higher rating.
+                print("Pruned", moves_left, "moves")
+                break
+        else:
+            if board_rating > hi:
+                # Black would not let White get here
+                print("Pruned", moves_left, "moves")
+                break
+        
+    # exit(0)
 
     return (move_to_beat, board_rating_to_beat, lo, hi)
 

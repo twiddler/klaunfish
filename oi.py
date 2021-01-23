@@ -1,4 +1,5 @@
 import chess
+import math
 from colorama import Fore
 from colorama import Style
 from colorama import Back
@@ -52,7 +53,7 @@ def input_move(board: chess.Board):
 
 def auto_move_rec(board: chess.Board, depth: int):
     print(f"Calculating best move for {player_string(board.turn)} ...")
-    (move, _) = rate.best_move(board, depth)
+    (move, _) = rate.best_move(board, depth, -math.inf)
 
     if move == None:
         info(f"No legal move left.")

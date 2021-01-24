@@ -19,6 +19,7 @@ chmod +x $TEMPDIR/serve.sh
 
 # merge and install requirements
 cat requirements.txt >> $TEMPDIR/requirements.txt
+virtualenv $TEMPDIR/.venv
 source $TEMPDIR/.venv/bin/activate
 pip install -r $TEMPDIR/requirements.txt
 

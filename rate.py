@@ -108,8 +108,11 @@ piece_values = {
 
 
 def rate_piece(board: chess.Board, square: chess.Square, piece: chess.Piece) -> float:
-    piece_value = squaresets.piece_values[piece.piece_type][0 if piece.color == board.turn else 1]
-    weight = squaresets.square_piece_weights[piece.piece_type].flat[square]
+    elem_pos = 0 if piece.color == board.turn else 1
+
+    piece_value = squaresets.piece_values[piece.piece_type][elem_pos]
+    weight = squaresets.square_piece_weights[piece.piece_type][elem_pos].flat[square]
+
     return piece_value * weight
 
 
@@ -125,7 +128,7 @@ def rate_board(board: chess.Board) -> float:
         board_rating = -math.inf
 
     else:
-        board_rating = 0
+        board_rating = 0 if board.castling_rights else .5
         for square in chess.SQUARES:
             board_rating += rate_square(board, square)
 

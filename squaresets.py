@@ -53,6 +53,10 @@ square_piece_weights = {
 }
 
 
+for piece, square_weights in square_piece_weights.items():
+    square_piece_weights[piece] = (square_weights, np.flipud(reshape(square_weights)))
+
+
 piece_values: Dict[int, Tuple[float, float]] = {
     chess.PAWN: (1., -1.),
     chess.BISHOP: (3., -3.),

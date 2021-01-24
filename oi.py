@@ -3,7 +3,7 @@ import math
 from colorama import Fore, Style, Back
 import inquirer
 from enum import Flag
-import rate
+import search
 import paint
 
 
@@ -60,7 +60,7 @@ def input_move(board: chess.Board):
 
 def auto_move(board: chess.Board, depth=11):
     print(f"Calculating best move for {player_string(board.turn)} ...")
-    move = rate.best_move(board, depth)[0]
+    move = search.best_move(board, depth)[0]
 
     if move == None:
         info(f"No legal move left.")

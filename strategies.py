@@ -1,7 +1,6 @@
 # Makes this bot compatible with https://github.com/namin/lichess-bot
 
-from rate import best_move
-import math
+from search import best_move
 
 
 def klaunfish(board):

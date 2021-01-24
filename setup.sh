@@ -10,12 +10,12 @@ git checkout acba34feb7f9d4aa7f76f7c7d1c2ad4c372a0637
 cd -
 
 # copy necessary scripts
-cp oi.py $TEMPDIR/oi.py
-cp paint.py $TEMPDIR/paint.py
-cp rate.py $TEMPDIR/rate.py
-cp strategies.py $TEMPDIR/strategies.py
-cp squaresets.py $TEMPDIR/squaresets.py
-cp serve.sh $TEMPDIR/serve.sh
+cp oi.py $TEMPDIR/
+cp paint.py $TEMPDIR/
+cp rate.py $TEMPDIR/
+cp search.py $TEMPDIR/
+cp strategies.py $TEMPDIR/
+cp serve.sh $TEMPDIR/
 chmod +x $TEMPDIR/serve.sh
 
 # merge and install requirements

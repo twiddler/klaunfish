@@ -37,7 +37,7 @@ def label_for_sort(board, move):
     )
 
 
-def sorted_legal_moves(board: chess.Board):
+def sorted_legal_moves(board: chess.Board) -> List[chess.Move]:
     # We want Trues to come first. But False < True. So negate.
     key = lambda move: tuple([not e for e in label_for_sort(board, move)])
 

@@ -5,7 +5,7 @@ import math
 
 
 def klaunfish(board):
-    move = best_move(board, 30)[0]
+    move = best_move(board, 5)[0]
     return move.uci()
 
 

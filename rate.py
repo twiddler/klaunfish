@@ -3,7 +3,16 @@ import chess
 import math
 import rate
 import random
-from typing import Dict, Tuple, Union, List
+from typing import Tuple, List
+import numpy as np
+import squaresets
+
+
+def wins(board: chess.Board, move: chess.Move):
+    board.push(move)
+    result = board.is_checkmate()
+    board.pop()
+    return result
 
 
 def moves_to_center(board: chess.Board, move: chess.Move):
@@ -29,6 +38,7 @@ def attacking(board, move):
 def label_for_sort(board, move):
     # Seeing best move early speeds up pruning.
     return (
+        wins(board, move),
         captures(board, move),
         not_attacked(board, move),
         attacking(board, move),
@@ -88,23 +98,24 @@ def last_turn(board):
 
 
 piece_values = {
-    chess.PAWN: 1,
-    chess.KNIGHT: 3,
+    chess.PAWN: 1.,
+    chess.KNIGHT: 3.,
     chess.BISHOP: 3.25,
-    chess.ROOK: 5,
-    chess.QUEEN: 9,
-    chess.KING: 3,
+    chess.ROOK: 5.,
+    chess.QUEEN: 9.,
+    chess.KING: 3.,
 }
 
 
-def rate_piece(board: chess.Board, piece: chess.Piece) -> float:
-    piece_value = piece_values[piece.piece_type]
-    return piece_value if piece.color == board.turn else -piece_value
+def rate_piece(board: chess.Board, square: chess.Square, piece: chess.Piece) -> float:
+    piece_value = squaresets.piece_values[piece.piece_type][0 if piece.color == board.turn else 1]
+    weight = squaresets.square_piece_weights[piece.piece_type].flat[square]
+    return piece_value * weight
 
 
 def rate_square(board: chess.Board, square: chess.Square) -> float:
     piece = board.piece_at(square)
-    return rate_piece(board, piece) if piece != None else 0
+    return rate_piece(board, square, piece) if piece != None else 0
 
 
 def rate_board(board: chess.Board) -> float:

@@ -14,6 +14,7 @@ cp oi.py $TEMPDIR/oi.py
 cp paint.py $TEMPDIR/paint.py
 cp rate.py $TEMPDIR/rate.py
 cp strategies.py $TEMPDIR/strategies.py
+cp squaresets.py $TEMPDIR/squaresets.py
 cp serve.sh $TEMPDIR/serve.sh
 chmod +x $TEMPDIR/serve.sh
 

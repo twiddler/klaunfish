@@ -9,12 +9,15 @@ git clone git@github.com:namin/lichess-bot .
 git checkout acba34feb7f9d4aa7f76f7c7d1c2ad4c372a0637
 cd -
 
-# copy necessary scripts
-cp oi.py $TEMPDIR/
-cp paint.py $TEMPDIR/
-cp rate.py $TEMPDIR/
-cp search.py $TEMPDIR/
-cp strategies.py $TEMPDIR/
+# copy scripts and config
+ln -s "$(pwd)/oi.py" $TEMPDIR/
+ln -s "$(pwd)/paint.py" $TEMPDIR/
+ln -s "$(pwd)/rate.py" $TEMPDIR/
+ln -s "$(pwd)/search.py" $TEMPDIR/
+rm $TEMPDIR/strategies.py
+ln -s "$(pwd)/strategies.py" $TEMPDIR/
+ln -s "$(pwd)/graph.py" $TEMPDIR/
+ln -s "$(pwd)/config.yml" $TEMPDIR/
 cp serve.sh $TEMPDIR/
 chmod +x $TEMPDIR/serve.sh
 
@@ -26,5 +29,5 @@ pip install -r $TEMPDIR/requirements.txt
 
 # inform what to do next
 echo
-echo "Edit ${TEMPDIR}/config.yml, then run ${TEMPDIR}/serve.sh"
+echo "Setup complete. Run ${TEMPDIR}/serve.sh!"
 echo

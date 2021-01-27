@@ -5,6 +5,8 @@ import inquirer
 from enum import Flag
 import search
 import paint
+import networkx as nx
+import graph
 
 
 class Player(Flag):
@@ -58,9 +60,16 @@ def input_move(board: chess.Board):
         input_move(board)
 
 
-def auto_move(board: chess.Board, depth=11):
+def auto_move(board: chess.Board, depth, plot=False):
     print(f"Calculating best move for {player_string(board.turn)} ...")
-    move = search.best_move(board, depth)[0]
+
+    if plot:
+        G = nx.DiGraph()
+        move = search.best_move(board, depth, G=G)[0]
+        graph.plot(G, save_as=f"depth_{depth}_{len(list(G.edges()))}_sort9.pdf")
+        exit(1)
+    else:
+        move = search.best_move(board, depth)[0]
 
     if move == None:
         info(f"No legal move left.")
